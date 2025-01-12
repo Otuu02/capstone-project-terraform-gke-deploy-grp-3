@@ -24,7 +24,7 @@ resource "google_container_node_pool" "general" {
   node_config {
     preemptible  = false
     machine_type = "e2-small"
-
+    disk_size_gb = 50 # Reduce to a value that fits your quota
     labels = {
       role = "general"
     }

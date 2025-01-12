@@ -13,6 +13,12 @@ provider "google" {
   region      = var.region          # Use a variable for region
 }
 
+#provider "google" {
+  #credentials = file("gcp-key.json") # This should match the service account key file in the pipeline
+  #project     = "sapient-spark-436013-t0"     # Use a variable for flexibility
+  3region      = "us-central1"         # Use a variable for region
+}
+
 
 
 
