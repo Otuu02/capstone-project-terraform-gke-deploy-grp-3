@@ -1,12 +1,14 @@
-name: 'Terraform_Destroy GKE Resources'
+name: 'Terraform_Deploy GKE to GCP'
 
 # Trigger points
 on:
-  workflow_dispatch: # Trigger manually to prevent accidental execution
+  push:
+    branches: [ "main" ]
+  pull_request:
 
 jobs:
   terraform:
-    name: 'Terraform Destroy'
+    name: 'Terraform'
     runs-on: ubuntu-latest
     environment: production
 
@@ -38,18 +40,28 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
-      # Step 5: Run Terraform Destroy
-      - name: Terraform Destroy
-        run: terraform destroy -auto-approve -input=false -var="project_id=${{ secrets.GCP_PROJECT_ID }}" -var="region=us-central1"
+      # Step 5: Terraform Plan
+      - name: Terraform Plan
+        run: terraform plan -input=false -var="project_id=${{ secrets.GCP_PROJECT_ID }}" -var="region=us-central1"
 
-      # Optional: Terraform Apply (Commented Out)
-      # Uncomment this step to apply Terraform configuration instead of destroying
+      # Step 6: Apply Terraform Configuration (Commented Out)
+      # Uncomment this block to apply Terraform configuration
       # - name: Terraform Apply
       #   run: terraform apply -auto-approve -input=false -var="project_id=${{ secrets.GCP_PROJECT_ID }}" -var="region=us-central1"
 
-      # Optional: Post-destroy cleanup
-      - name: Cleanup Terraform State
-        if: always()
+      # Step 7: Terraform Destroy
+      - name: Terraform Destroy
+        run: terraform destroy -auto-approve -input=false -var="project_id=${{ secrets.GCP_PROJECT_ID }}" -var="region=us-central1"
+
+      # Step 8: Deploy Cert-Manager
+      - name: Deploy Cert-Manager
         run: |
-          rm -rf .terraform
-          rm -f terraform.tfstate terraform.tfstate.backup
+          kubectl create namespace cert-manager
+          kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.16.2/cert-manager.yaml
+          kubectl wait --namespace cert-manager --for=condition=available deployment/cert-manager --timeout=300s
+
+      # Step 9: Install Helm
+      - name: Install Helm
+        run: |
+          curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
+          sudo apt-get install apt-transport-https --yes
