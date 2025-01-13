@@ -45,12 +45,12 @@ jobs:
         run: terraform plan -input=false -var="project_id=${{ secrets.GCP_PROJECT_ID }}" -var="region=us-central1"
 
       # Step 6: Apply Terraform configuration
-      - name: Terraform Apply
-        run: terraform apply -auto-approve -input=false -var="project_id=${{ secrets.GCP_PROJECT_ID }}" -var="region=us-central1"
+      #- name: Terraform Apply
+        #run: terraform apply -auto-approve -input=false -var="project_id=${{ secrets.GCP_PROJECT_ID }}" -var="region=us-central1"
 
       # Optional: Terraform Destroy (commented out)
-      # - name: Terraform Destroy
-      #   run: terraform destroy -auto-approve -input=false -var="project_id=${{ secrets.GCP_PROJECT_ID }}" -var="region=us-central1"
+       - name: Terraform Destroy
+         run: terraform destroy -auto-approve -input=false -var="project_id=${{ secrets.GCP_PROJECT_ID }}" -var="region=us-central1"
 
       # Step 7: Install Cert-Manager
       - name: Deploy Cert-Manager
