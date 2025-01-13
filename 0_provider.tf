@@ -1,23 +1,23 @@
 terraform {
   required_providers {
     google = {
-      source = "hashicorp/google"
+      source  = "hashicorp/google"
       version = "6.13.0"
     }
   }
 }
 
 provider "google" {
-  credentials = file("gcp-key.json") # This should match the service account key file in the pipeline
-  project     = var.project_id      # Use a variable for flexibility
-  region      = var.region          # Use a variable for region
+  credentials = file("gcp-key.json") # Path to the service account key
+  project     = var.project_id      # Variable for project ID
+  region      = var.region          # Variable for region
 }
 
-#provider "google" {
+  #provider "google" {
   #credentials = file("gcp-key.json") # This should match the service account key file in the pipeline
   #project     = "sapient-spark-436013-t0"     # Use a variable for flexibility
   #region      = "us-central1"         # Use a variable for region
-}
+#}
 
 
 
