@@ -1,4 +1,4 @@
-nname: 'Terraform_Deploy GKE to GCP'
+name: 'Terraform_Deploy GKE to GCP'
 
 # Trigger point
 on:
