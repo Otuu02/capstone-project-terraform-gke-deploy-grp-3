@@ -67,8 +67,8 @@ jobs:
           kubectl get pod -n cert-manager
 
       # Uncomment the following line to apply a custom ClusterIssuer
-      # - name: Apply ClusterIssuer
-      #   run: kubectl apply -f clusterissuer.yaml
+       - name: Apply ClusterIssuer
+         run: kubectl apply -f clusterissuer.yaml
 
       - name: Install Helm Before Deploying with Helm
         run: |
