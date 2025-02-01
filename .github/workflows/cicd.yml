@@ -62,13 +62,13 @@ jobs:
 
       - name: Deploy CertManager
         run: |
-          kubectl create namespace cert-manager
+          kubectl create namespace cert-manager || echo "Namespace cert-manager already exists"
           kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.16.2/cert-manager.yaml
           kubectl get pod -n cert-manager
 
       # Uncomment the following line to apply a custom ClusterIssuer
-       - name: Apply ClusterIssuer
-         run: kubectl apply -f clusterissuer.yaml
+      - name: Apply ClusterIssuer
+        run: kubectl apply -f clusterissuer.yaml
 
       - name: Install Helm Before Deploying with Helm
         run: |
@@ -78,8 +78,8 @@ jobs:
           sudo apt-get update
           sudo apt-get install helm -y
 
-      - name: Deploy Nginx-Controller1
+      - name: Deploy Nginx-Controller
         run: |
           helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-          kubectl create namespace ingress-nginx
+          kubectl create namespace ingress-nginx || echo "Namespace ingress-nginx already exists"
           helm install ingress-nginx ingress-nginx/ingress-nginx -n ingress-nginx
