@@ -78,7 +78,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install helm -y
 
-      - name: Deploy Nginx-Controller
+      - name: Deploy Nginx-Controller1
         run: |
           helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
           kubectl create namespace ingress-nginx
